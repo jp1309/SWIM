@@ -257,14 +257,12 @@
     </div>
   </div>
 
-  <!-- FINALS SELECTION -->
+  <!-- BEST BY EVENTS -->
   <div class="section" id="sec-finals">
-    <div class="filters">
-      <label>Gender:</label>
-      <select id="finalsGender"><option>Boys</option><option>Girls</option></select>
-      <button class="print-btn" onclick="window.print()">Print Selection</button>
-    </div>
-    <div class="finals-grid" id="finalsGrid"></div>
+    <h2 style="color:var(--navy);margin-bottom:0.5rem;padding-bottom:0.5rem;border-bottom:3px solid var(--gold);">Boys</h2>
+    <div class="finals-grid" id="finalsGridBoys"></div>
+    <h2 style="color:var(--navy);margin:1.5rem 0 0.5rem;padding-bottom:0.5rem;border-bottom:3px solid var(--gold);">Girls</h2>
+    <div class="finals-grid" id="finalsGridGirls"></div>
   </div>
 </main>
 
@@ -484,26 +482,21 @@ function renderSwimmers() {
 // FINALS SELECTION
 // ============================================================
 function renderFinals() {
-  const render = () => {
-    const gender = document.getElementById('finalsGender').value;
-    const grid = document.getElementById('finalsGrid');
+  ['Boys', 'Girls'].forEach(gender => {
+    const grid = document.getElementById(gender === 'Boys' ? 'finalsGridBoys' : 'finalsGridGirls');
     grid.innerHTML = '';
 
-    // Individual events for this gender
     const events = Object.values(EVENTS)
       .filter(e => e.gender === gender && e.type === 'individual')
       .sort((a,b) => a.number - b.number);
 
     events.forEach(ev => {
-      // Get all swimmers with times in this event
       const swimmerBests = [];
       Object.values(SWIMMERS).forEach(s => {
         if (s.gender !== gender) return;
         const best = getBestTime(s.canonical, ev.number);
         if (best != null) {
-          // Count how many meets they've done this event
           const meetCount = new Set(s.results.filter(r => r.event_number === ev.number).map(r => r.meet_date)).size;
-          // Latest time
           const latest = s.results
             .filter(r => r.event_number === ev.number && r.time_seconds != null)
             .sort((a,b) => MEETS_ORDER.indexOf(b.meet_date) - MEETS_ORDER.indexOf(a.meet_date))[0];
@@ -525,8 +518,7 @@ function renderFinals() {
       let html = `<h3>E${ev.number} ${ev.name} (${ev.distance}yd ${ev.stroke})</h3>`;
       html += `<table><tr><th class="rank">#</th><th>Swimmer</th><th>Best</th><th>Latest</th><th>Meets</th></tr>`;
       swimmerBests.forEach((sb, i) => {
-        const rec = i < 4 ? ' recommended' : '';
-        html += `<tr class="finals-row${rec}" data-canonical="${sb.canonical}" onclick="toggleFinalsSelect(this)">
+        html += `<tr class="finals-row" data-canonical="${sb.canonical}" onclick="toggleFinalsSelect(this)">
           <td class="rank">${i+1}</td>
           <td><span class="swimmer-link" onclick="event.stopPropagation();openSwimmerProfile('${sb.canonical}')">${sb.display}</span></td>
           <td><strong>${fmtTime(sb.bestTime)}</strong></td>
@@ -538,10 +530,7 @@ function renderFinals() {
       div.innerHTML = html;
       grid.appendChild(div);
     });
-  };
-
-  document.getElementById('finalsGender').addEventListener('change', render);
-  render();
+  });
 }
 
 function toggleFinalsSelect(tr) {
