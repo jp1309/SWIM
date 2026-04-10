@@ -160,8 +160,6 @@
   .finals-event td.selected { background: #e8f5e9; }
   .finals-event tr.recommended td { }
 
-  /* Trend sparkline */
-  .trend { display: inline-flex; align-items: center; gap: 2px; }
   .trend-dot {
     width: 6px; height: 6px; border-radius: 50%;
     display: inline-block;
@@ -516,7 +514,6 @@ function renderFinals() {
             bestTime: best,
             latestTime: latest ? latest.time_seconds : null,
             meetCount: meetCount,
-            trend: computeTrend(s.canonical, ev.number)
           });
         }
       });
@@ -526,7 +523,7 @@ function renderFinals() {
       const div = document.createElement('div');
       div.className = 'finals-event';
       let html = `<h3>E${ev.number} ${ev.name} (${ev.distance}yd ${ev.stroke})</h3>`;
-      html += `<table><tr><th class="rank">#</th><th>Swimmer</th><th>Best</th><th>Latest</th><th>Meets</th><th>Trend</th></tr>`;
+      html += `<table><tr><th class="rank">#</th><th>Swimmer</th><th>Best</th><th>Latest</th><th>Meets</th></tr>`;
       swimmerBests.forEach((sb, i) => {
         const rec = i < 4 ? ' recommended' : '';
         html += `<tr class="finals-row${rec}" data-canonical="${sb.canonical}" onclick="toggleFinalsSelect(this)">
@@ -535,7 +532,6 @@ function renderFinals() {
           <td><strong>${fmtTime(sb.bestTime)}</strong></td>
           <td>${fmtTime(sb.latestTime)}</td>
           <td>${sb.meetCount}</td>
-          <td>${sb.trend}</td>
         </tr>`;
       });
       html += `</table>`;
@@ -546,25 +542,6 @@ function renderFinals() {
 
   document.getElementById('finalsGender').addEventListener('change', render);
   render();
-}
-
-function computeTrend(canonical, eventNum) {
-  const s = SWIMMERS[canonical];
-  if (!s) return '';
-  const results = s.results
-    .filter(r => r.event_number === eventNum && r.time_seconds != null)
-    .sort((a,b) => MEETS_ORDER.indexOf(a.meet_date) - MEETS_ORDER.indexOf(b.meet_date));
-
-  if (results.length < 2) return '<span style="color:var(--gray)">--</span>';
-
-  const first = results[0].time_seconds;
-  const last = results[results.length - 1].time_seconds;
-  const diff = last - first;
-  const pct = ((diff / first) * 100).toFixed(1);
-
-  if (diff < -0.5) return `<span style="color:var(--green)">+${(-pct)}% faster</span>`;
-  if (diff > 0.5) return `<span style="color:var(--red)">${(-pct)}% slower</span>`;
-  return `<span style="color:var(--gray)">~same</span>`;
 }
 
 function toggleFinalsSelect(tr) {
