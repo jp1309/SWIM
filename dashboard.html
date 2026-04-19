@@ -669,8 +669,16 @@ function renderChampionship() {
     {name:'Kenmore',         pts:384.0},
   ];
 
-  // Top 8 per individual event (E3–E20)
+  // All 22 events (E1–E22): 4 relays + 18 individual
   const CHART_EVENTS = [
+    {ev:'E1',name:'200 Medley Relay — Boys',relay:true,entries:[
+      {p:1,s:'Williamsburg',n:'Williamsburg A',t:111.47},{p:2,s:'Swanson',n:'Swanson A',t:112.19},
+      {p:3,s:'Gunston',n:'Gunston A',t:119.93},{p:4,s:'Thomas Jefferson',n:'Thomas Jefferson A',t:125.44},
+      {p:5,s:'Dorothy Hamm',n:'Dorothy Hamm A',t:127.28},{p:6,s:'Kenmore',n:'Kenmore A',t:130.69}]},
+    {ev:'E2',name:'200 Medley Relay — Girls',relay:true,entries:[
+      {p:1,s:'Swanson',n:'Swanson A',t:125.13},{p:2,s:'Williamsburg',n:'Williamsburg A',t:128.16},
+      {p:3,s:'Dorothy Hamm',n:'Dorothy Hamm A',t:129.75},{p:4,s:'Gunston',n:'Gunston A',t:136.16},
+      {p:5,s:'Thomas Jefferson',n:'Thomas Jefferson A',t:145.12},{p:6,s:'Kenmore',n:'Kenmore A',t:164.74}]},
     {ev:'E3',name:'100 Free — Boys',entries:[
       {p:1,s:'Williamsburg',n:'Cory, Maddox',t:52.72},{p:2,s:'Thomas Jefferson',n:'Ruben, Jack',t:53.06},
       {p:3,s:'Gunston',n:'Hadley, James',t:53.24},{p:4,s:'Swanson',n:'Gyor, Brennan',t:55.25},
@@ -761,6 +769,14 @@ function renderChampionship() {
       {p:3,s:'Gunston',n:'Zuniga, Micaela',t:36.53},{p:4,s:'Dorothy Hamm',n:'McDonnell, Finley',t:37.84},
       {p:5,s:'Williamsburg',n:'Cocker, Claire',t:39.75},{p:6,s:'Swanson',n:'Bretzfield, Tenley',t:40.28},
       {p:7,s:'Dorothy Hamm',n:'Clark, Colin',t:40.72},{p:8,s:'Dorothy Hamm',n:'Cole, Imogen',t:41.19}]},
+    {ev:'E21',name:'200 Free Relay — Boys',relay:true,entries:[
+      {p:1,s:'Swanson',n:'Swanson A',t:101.94},{p:2,s:'Williamsburg',n:'Williamsburg A',t:103.73},
+      {p:3,s:'Gunston',n:'Gunston A',t:103.86},{p:4,s:'Thomas Jefferson',n:'Thomas Jefferson A',t:110.69},
+      {p:5,s:'Dorothy Hamm',n:'Dorothy Hamm A',t:113.81},{p:6,s:'Kenmore',n:'Kenmore A',t:163.71}]},
+    {ev:'E22',name:'200 Free Relay — Girls',relay:true,entries:[
+      {p:1,s:'Swanson',n:'Swanson A',t:112.12},{p:2,s:'Dorothy Hamm',n:'Dorothy Hamm A',t:114.00},
+      {p:3,s:'Gunston',n:'Gunston A',t:125.81},{p:4,s:'Thomas Jefferson',n:'Thomas Jefferson A',t:128.73},
+      {p:5,s:'Williamsburg',n:'Williamsburg A',t:136.00},{p:6,s:'Kenmore',n:'Kenmore A',t:185.84}]},
   ];
 
   const SWIMMERS_CHAMP = [
